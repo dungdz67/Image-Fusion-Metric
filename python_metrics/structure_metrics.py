@@ -3,6 +3,7 @@ from scipy.ndimage import convolve, uniform_filter
 from scipy.signal import windows
 from PIL import Image
 from scipy.signal import convolve2d
+from scipy.fft import ifftshift, fft2, ifft2
 import time
 
 # ──────────────────────────────────────────────
@@ -980,18 +981,13 @@ if __name__ == "__main__":
     def load_gray(path):
         return np.array(Image.open(path).convert("L"))
     import time
-    # A = load_gray('data/AANLIB/MyDatasets/SPECT-MRI/test/MRI/4010.png')
-    # B = load_gray('data/AANLIB/MyDatasets/SPECT-MRI/test/SPECT/4010.png')
-    # F = load_gray('data/Fused_results/SPECT-MRI/ASFE-Fusion/4010.png')
-
-    N = 11
-    
-    A = np.random.randint(0, 255, (N, N))
-    B= np.random.randint(0, 255, (N, N))
-    F = np.random.randint(0, 255, (N, N))
-
+    A = load_gray('test_img/MRI/25052.bmp')
+    B = load_gray('test_img/PET/25052.bmp')
+    F = load_gray('test_img/Fused/Fused_Gray.bmp')
     # print("\nStructural Similarity (SSIM): %.6f" % (0.5 * ssim(A, F) + 0.5 * ssim(B, F)))
     # print("Multi-Scale Structural Similarity (MS-SSIM): %.6f" % ms_ssim(np.stack([A, B], axis=2), F))
+    print("FSIM: %.6f" % fsim(A, F))
+
     print("Peilla metrics:")
     print("     Q:",piella_metrics(A, B, F, sw=1))   # basic
     print("     Qw:", piella_metrics(A, B, F, sw=2))   # weighted
