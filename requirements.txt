@@ -4,3 +4,4 @@ PyWavelets
 opencv-contrib-python
 scikit-image
 Pillow
+tqdm

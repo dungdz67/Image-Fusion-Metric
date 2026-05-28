@@ -100,8 +100,8 @@ def qabf(pA, pB, pF):
         return full[kh//2:kh//2+h, kw//2:kw//2+w]
 
     def getArray(img):
-        SAx = convolution(h3, img)
-        SAy = convolution(h1, img)
+        SAx = convolution(img, h3)  
+        SAy = convolution(img, h1)  
         gA = np.sqrt(np.multiply(SAx, SAx) + np.multiply(SAy, SAy))
         n, m = img.shape
         aA = np.zeros((n, m))
@@ -254,28 +254,23 @@ def sf(F: np.ndarray) -> float:
     return float(np.sqrt(rf1 ** 2 + cf1 ** 2))
 
 if __name__ == "__main__":
-    I_1 = np.array([
-        [80, 20, 85],
-        [75, 25, 78],
-        [80, 22, 88]
-    ], dtype=np.float64)
-
-    I_2 = np.array([
-        [30, 110, 35],
-        [28, 120, 32],
-        [26, 115, 30]
-    ], dtype=np.float64)
-
-    I_F = np.array([
-        [58, 70, 60],
-        [55, 78, 57],
-        [62, 75, 61]
-    ], dtype=np.float64)
+    import cv2
+    from PIL import Image
+    from time import time
+    def load_gray(path):
+        return np.array(Image.open(path).convert("L"))
+    # def load_gray(path):
+    #     return np.array(cv2.imread(path, cv2.IMREAD_GRAYSCALE))
     
-    qabf_value = qabf(I_1, I_2, I_F)
+    
+    A = load_gray('test_img/MRI/25052.bmp')
+    B = load_gray('test_img/PET/25052.bmp')
+    F = load_gray('test_img/Fused/Fused_Gray.bmp')
+    
+    qabf_value = qabf(A, B, F)
     print(f"Quality of Image Fusion (QABF): {qabf_value:.4f}")
     
-    qabf_value_full, labf_value, nabf_value, nabf1_value = petrovic_metrics(I_1, I_2, I_F)
+    qabf_value_full, labf_value, nabf_value, nabf1_value = petrovic_metrics(A, B, F)
     print(f"Petrovic Metrics:")
     print(f"QABF: {qabf_value_full:.4f}")
     print(f"LABF: {labf_value:.4f}")

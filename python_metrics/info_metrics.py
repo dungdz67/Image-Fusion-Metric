@@ -165,9 +165,6 @@ def _normalize(data):
 
 # # Helpers
 
-# CHANGE THIS to the path of dmey.mat
-DMEY_MAT_PATH = "src/metrics/python_metrics/dmey.mat"
-
 def _cal_lo_d():
     wavelet = loadmat(DMEY_MAT_PATH)
     wavelet = wavelet['dmey']
